@@ -25,7 +25,7 @@ function sendDiscordMsg(url, content) {
   const payload = {
     "content": content,
     "username": "숙제 알리미", // 봇 이름 마음대로 설정 가능
-    // "avatar_url": "이미지 주소" // 원하면 프로필 사진도 설정 가능
+    "avatar_url": "https://cdn.discordapp.com/attachments/1439236998564151417/1453018375297961984/icon_3.png?ex=697cb3d0&is=697b6250&hm=47154873999def0c11281e45babe09f60a7c182a5e5c7cad60ec31826fdfb684&" // 원하면 프로필 사진도 설정 가능
   };
 
   const options = {

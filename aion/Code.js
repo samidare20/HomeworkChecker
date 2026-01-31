@@ -1,9 +1,27 @@
-var lineName={};
-lineName["캐릭터 이름"]=3;
-lineName["남은 오드"]=4;
-lineName["충전시간 계산"]=5;
-lineName["추적시작 시간"]=25;
-
+var lineName={
+"캐릭터 이름":3,
+"남은 오드":4,
+"충전시간 계산":5,
+"완충시간":6,
+"추적시작 시간":25,
+"틱":26
+};
+function gettick(pastTime,pastOdd)
+{
+  const getTick = (date) => {
+        // 1. UTC 기준 ms -> 시간 변환
+        // 2. getTimezoneOffset()은 분 단위(한국은 -540)이므로 시간으로 변환해 빼줌(결국 더하기가 됨)
+        const localTotalHours = (date.getTime() / (1000 * 60 * 60)) - (date.getTimezoneOffset() / 60);
+        
+        // 3. (시간 + 1) / 3 하고 내림(floor) 처리
+        return Math.floor((localTotalHours + 1) / 3);
+    };
+    const pastDate=new date(pastTime);
+    const nowDate=new date();
+    const interval=gettick(nowDate)-gettick(pastDate);
+    
+    
+}
 function onEdit(e) {
   const sheet = e.source.getActiveSheet();
   const range = e.range;
@@ -28,29 +46,15 @@ function onEdit(e) {
       const existodd=parseInt(sheet.getRange(row,lineName["남은 오드"]).getValue());
       Logger.log(existodd);
       const r=String.fromCharCode(64+lineName["추적시작 시간"]);
+      const o=String.fromCharCode(64+lineName["남은 오드"]);
       sheet.getRange(row,lineName["추적시작 시간"]).setValue(new Date());
 
-      const formula=`=min(840,${existodd}+INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3))`;
-
-      sheet.getRange(row,lineName["남은 오드"]).setFormula(formula);
-      Logger.log(formula);
-      /**
-      const remodd=((840-existodd)/15)*3;
-      
-      var nexttime=new Date();
-      const needtime=Math.min(remodd,remticket);
-      nexttime.setHours(nexttime.getHours()+needtime);
-      Logger.log(nexttime);
-
-      const endodd=needtime/3*15+existodd;
-      const enddticket=needtime/8+existticket;
-
-      sheet.getRange(row,7).setValue(nexttime);
-      sheet.getRange(row,8).setValue(Math.floor(endodd));
-      sheet.getRange(row,9).setValue(Math.floor(enddticket));
-      sheet.getRange(row,10).setValue(Math.floor(Math.min(endodd/80,enddticket))); */
-
-
+      const formula1=`=min(840,${existodd}+(INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3))*15)`;
+      const formula2=`INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3)`;
+      const formula3=`=time(hour(${r}${row})-mod(HOUR(${r}${row}),3)-1,0,0)+date(YEAR(${r}${row}),MONTH(${r}${row}),DAY(${r}${row}))+roundup((840-${o}${row}+15)/15)*3/24`
+      sheet.getRange(row,lineName["남은 오드"]).setFormula(formula1);
+      sheet.getRange(row,lineName["틱"]).setFormula(formula2);
+      sheet.getRange(row,lineName["완충시간"]).setFormula(formula3);
     }
   
   }

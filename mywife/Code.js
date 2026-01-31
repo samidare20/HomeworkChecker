@@ -36,7 +36,21 @@ function sendDiscordMsg(url, content) {
 
   UrlFetchApp.fetch(url, options);
 }
+function showSimpleInput() {
+  const ui = SpreadsheetApp.getUi();
+  const result = ui.prompt(
+      '키워드 등록',
+      '등록할 게임 키워드를 입력하세요 (예: 보스):',
+      ui.ButtonSet.OK_CANCEL
+  );
 
+  // 사용자가 OK를 눌렀다면
+  if (result.getSelectedButton() == ui.Button.OK) {
+    const text = result.getResponseText();
+    ui.alert('입력하신 키워드: ' + text);
+    // 여기서 시트에 값을 박아넣으면 됩니다.
+  }
+}
 function onEdit(e) {
   const sheet = e.source.getActiveSheet();
   const range = e.range;
@@ -79,7 +93,6 @@ function onEdit(e) {
         }
       }
       
-      sheet.getRange(row, 4).setValue(d);
       sheet.getRange(row, 6).setValue(nextTime);
       // Logger.log(d+sheet.getRange(row,5));
       // 2. F열(6번째 열) 상태를 '대기중'으로 초기화

@@ -64,8 +64,8 @@ function onEdit(e) {
       sheet.getRange(row,lineName["추적시작 시간"]).setValue(new Date());
 
       const formula1=`=min(840,${existodd}+(INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3))*15)`;
-      const formula2=`INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3)`;
-      const formula3=`=time(hour(${r}${row})-mod(HOUR(${r}${row}),3)-1,0,0)+date(YEAR(${r}${row}),MONTH(${r}${row}),DAY(${r}${row}))+roundup((840-${o}${row}+15)/15)*3/24`
+      const formula2=`=INT((INT(NOW())*24 + HOUR(NOW()) + 1)/3) - INT((INT(${r}${row})*24 + HOUR(${r}${row}) + 1)/3)`;
+      const formula3=`=(INT((${r}${row}*24+1)/3)*3-1)/24 + CEILING(MAX(0, 840-${o}${row})/15)*3/24`;
       sheet.getRange(row,lineName["남은 오드"]).setFormula(formula1);
       sheet.getRange(row,lineName["틱"]).setFormula(formula2);
       sheet.getRange(row,lineName["완충시간"]).setFormula(formula3);

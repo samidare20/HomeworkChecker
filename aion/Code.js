@@ -46,6 +46,7 @@ function onEdit(e) {
   if (col === lineName["캐릭터 이름"] && row > 2 && e.value) { 
     // F열에 체크박스 생성
     sheet.getRange(row, lineName["충전시간 계산"]).insertCheckboxes();
+    sheet.getRange(row, lineName["주간 오드"]).insertCheckboxes();
   }
   // 변경된 곳이 2번째 열(C열, 체크박스)이고, 헤더(1행)가 아닌 경우만 실행
   if (range.getColumn() === lineName["충전시간 계산"] && range.getRow() > 2) {

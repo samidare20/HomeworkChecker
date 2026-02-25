@@ -3,9 +3,22 @@ var lineName={
 "남은 오드":4,
 "충전시간 계산":5,
 "완충시간":6,
+"주간 오드":7,
 "추적시작 시간":25,
 "틱":26
 };
+function weeklyodd()
+{
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getActiveSheet();
+  var col = lineName["주간 오드"];
+  var lastRow = sheet.getLastRow();
+  
+  if (lastRow >= 3) {
+    // 3행부터 마지막 행까지 '주간 오드' 열의 체크박스를 모두 해제합니다.
+    sheet.getRange(3, col, lastRow - 2).uncheck();
+  }
+}
 function gettick(pastTime,pastOdd)
 {
   const getTick = (date) => {
